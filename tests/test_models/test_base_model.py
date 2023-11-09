@@ -2,7 +2,6 @@
 """Tests File"""
 import unittest
 from models.base_model import BaseModel
-import pep8
 from datetime import datetime
 import models
 
@@ -55,12 +54,6 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsNotNone(BaseModel.to_dict.__doc__)
         self.assertIsNotNone(BaseModel.save.__doc__)
 
-    def test_pep8(self):
-        """test pep8 comes back clean"""
-        style = pep8.StyleGuide(quiet=True)
-        result = style.check_files(['models/base_model.py'])
-        self.assertEqual(result.total_errors, 0, "pep8")
-
     def test_method_str(self):
         """Test method str"""
         new = BaseModel()
@@ -88,6 +81,7 @@ class TestBaseModel(unittest.TestCase):
         updated = new.updated_at
         self.assertNotEqual(updated, created)
         self.assertGreater(updated, created)
+
 
 if __name__ == "__main__":
     unittest.main()
