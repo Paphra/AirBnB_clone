@@ -12,13 +12,25 @@ class BaseModel():
     """The Model from which all other models inherit
     """
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """The method that initializes properties
+
+        Args:
+            args (list): a list of positional arguments to the model
+            kwargs (dict): a dictionary of all key word arguments
         """
 
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+        if len(kwargs) > 0:
+            for key, value in kwargs.items():
+                if key != '__class__':
+                    if key in ['created_at', 'updated_at']:
+                        setattr(self, key, datetime.fromisoformat(value))
+                    else:
+                        setattr(self, key, value)
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
 
     def __str__(self):
         """Returns a string representation of the Model
@@ -42,11 +54,11 @@ class BaseModel():
         """
 
         ret_dict = {}       # dictionary to return
-        for k, v in self.__dict__.items():
-            if k in ['created_at', 'updated_at']:
-                ret_dict[k] = datetime.isoformat(getattr(self, k))
+        for key, value in self.__dict__.items():
+            if key in ['created_at', 'updated_at']:
+                ret_dict[key] = datetime.isoformat(value)
             else:
-                ret_dict[k] = v
+                ret_dict[key] = value
         ret_dict['__class__'] = self.__class__.__name__
 
         return ret_dict
