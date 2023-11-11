@@ -4,14 +4,15 @@
 
 import cmd
 import json
+import re
 from models import storage
-from models.base_model import BaseModel
-from models.user import User
-from models.place import Place
-from models.city import City
 from models.amenity import Amenity
+from models.base_model import BaseModel
+from models.city import City
+from models.place import Place
 from models.review import Review
 from models.state import State
+from models.user import User
 
 
 class HBNBCommand(cmd.Cmd):
@@ -47,8 +48,29 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """To be called when an Empty line is Entered
         """
+        pass
 
-        print('', end='')
+    def precmd(self, line: str):
+        segs = line.split('.')
+        if len(segs) == 2 and segs[0] in self.__MODELS.keys():
+            class_name = segs[0]
+            command_text = segs[1]
+            if command_text in ['all()', 'count()']:
+                command = command_text[:-2]
+                line = "{} {}".format(command, class_name)
+            elif command_text.startswith(('show', 'destroy')):
+                ctl = command_text.split('("')
+                if len(ctl) == 2 and ctl[1].endswith('")'):
+                    command = ctl[0]
+                    id = ctl[1][:-2]
+                    line = "{} {} {}".format(
+                        command,
+                        class_name,
+                        id
+                    )
+            elif command_text.startswith('update'):
+                pass
+        return super().precmd(line)
 
     def class_name_missing(self):
         """Print ** class name missing **"""
@@ -132,7 +154,7 @@ class HBNBCommand(cmd.Cmd):
                 item = self.get_item(class_name, instance_id)
                 if item:
                     obj_key = "{}.{}".format(
-                        item['__class__'], item['id']
+                        class_name, item.id
                     )
                     storage.destroy(obj_key)
                 else:
@@ -197,6 +219,27 @@ class HBNBCommand(cmd.Cmd):
                     self.no_instance_found()
             else:
                 self.class_does_not_exist()
+
+    def do_count(self, line):
+        """Prints the number of items for a given instance
+        """
+        args = line.split()
+
+        storage.reload()
+        objs = storage.all()
+        if len(args) < 1:
+            self.class_name_missing()
+        else:
+            Model = self.__MODELS.get(args[0], False)
+            if Model:
+                model_objs = []
+                for obj_key, obj in list(objs.items()):
+                    if obj_key.startswith(args[0]):
+                        model_objs.append(obj)
+                print(len(model_objs))
+            else:
+                self.class_does_not_exist()
+
 
 
 if __name__ == '__main__':

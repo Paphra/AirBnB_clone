@@ -8,13 +8,13 @@ Contains a class FileStorage for serialization and deserialization
 
 import json
 import os
-from models import base_model
-from models import user
-from models import place
-from models import state
-from models import city
 from models import amenity
+from models import base_model
+from models import city
+from models import place
 from models import review
+from models import state
+from models import user
 
 
 class FileStorage():
