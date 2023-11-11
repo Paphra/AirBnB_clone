@@ -3,7 +3,6 @@
 import unittest
 from models.base_model import BaseModel
 from datetime import datetime
-import models
 
 
 class TestBaseModel(unittest.TestCase):
