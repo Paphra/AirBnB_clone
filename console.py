@@ -69,7 +69,41 @@ class HBNBCommand(cmd.Cmd):
                         id
                     )
             elif command_text.startswith('update'):
-                pass
+                command = 'update'
+                if command_text.endswith('})'):
+                    b1 = command_text.find('(')
+                    comma = command_text.find(',')
+                    b2 = command_text.find(')')
+                    instance_id = json.loads(
+                        command_text[(b1 + 1):comma])
+                    obj_update = json.loads(
+                        command_text[(comma + 1):b2].strip())
+                    count = 0
+                    for k, v in list(obj_update.items()):
+                        line = "{} {} {} {}".format(
+                            class_name, instance_id, k, json.dumps(v)
+                        )
+                        if count < len(obj_update.items()) - 1:
+                            self.do_update(line)
+                        line = "update {}".format(line)
+
+                elif command_text.endswith(')'):
+                    ctl_tmp = command_text.split('(')
+                    ctl = ctl_tmp[1][:-1]
+                    ctl_array = ctl.split(',')
+                    if len(ctl_array) == 3:
+                        id = json.loads(ctl_array[0])
+                        attr = json.loads(ctl_array[1])
+                        val = json.loads(ctl_array[2])
+
+                        line = "{cmd} {cls} {id} {attr} {val}".format(
+                            cmd=command,
+                            cls=class_name,
+                            id=id,
+                            attr=attr,
+                            val=val
+                        )
+
         return super().precmd(line)
 
     def class_name_missing(self):
@@ -239,7 +273,6 @@ class HBNBCommand(cmd.Cmd):
                 print(len(model_objs))
             else:
                 self.class_does_not_exist()
-
 
 
 if __name__ == '__main__':
