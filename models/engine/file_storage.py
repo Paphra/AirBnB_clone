@@ -8,6 +8,13 @@ Contains a class FileStorage for serialization and deserialization
 
 import json
 import os
+from models import base_model
+from models import user
+from models import place
+from models import state
+from models import city
+from models import amenity
+from models import review
 
 
 class FileStorage():
@@ -16,9 +23,18 @@ class FileStorage():
 
     __file_path = 'file.json'
     __objects = {}
+    __MODELS = {
+        'BaseModel': base_model.BaseModel,
+        'User': user.User,
+        'Place': place.Place,
+        'State': state.State,
+        'City': city.City,
+        'Amenity': amenity.Amenity,
+        'Review': review.Review,
+    }
 
     def __init__(self):
-        """Initialize the file storag class
+        """Initialize the file storage class
         """
 
         pass
@@ -36,16 +52,18 @@ class FileStorage():
             obj (object): a new object to add
         """
 
-        obj_dict = obj.to_dict()
-        key = "{}.{}".format(obj_dict['__class__'], obj_dict['id'])
-        self.__objects[key] = obj_dict
+        key = "{}.{}".format(obj.__class__.__name__, obj.id)
+        self.__objects[key] = obj
 
     def save(self):
         """Saves the objects to a file
         """
 
         with open(self.__file_path, 'w') as file:
-            json.dump(self.__objects, file)
+            json.dump(
+                {k: v.to_dict() for k, v in self.__objects.items()},
+                file
+            )
 
     def reload(self):
         """Deserializes the JSON file to objects
@@ -53,4 +71,13 @@ class FileStorage():
 
         if os.path.exists(self.__file_path):
             with open(self.__file_path, 'r') as file:
-                self.__objects = json.load(file)
+                objects = json.load(file).items()
+                self.__objects = {
+                    k: self.__MODELS[
+                        k.split('.')[0]
+                        ](**v) for k, v in list(objects)}
+
+    def destroy(self, obj_key):
+        """Delete an Object"""
+        self.__objects.pop(obj_key)
+        self.save()
