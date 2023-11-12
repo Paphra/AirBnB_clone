@@ -10,6 +10,7 @@ from importlib import reload
 from models import base_model
 from models import user
 from models.engine import file_storage
+from models import storage
 
 
 class TestUser(unittest.TestCase):
@@ -25,6 +26,7 @@ class TestUser(unittest.TestCase):
         reload(file_storage)
         if os.path.exists(self.__path):
             os.remove(self.__path)
+        storage._FileStorage__objects = {}
 
     def tearDown(self):
         """tear down all that was setup and tested
@@ -32,6 +34,7 @@ class TestUser(unittest.TestCase):
 
         if os.path.exists(self.__path):
             os.remove(self.__path)
+        storage._FileStorage__objects = {}
 
     def test_user_instantiation(self):
         """Testing the instantiation of the model of User
