@@ -54,7 +54,7 @@ class HBNBCommand(cmd.Cmd):
         segs = line.split('.')
         if len(segs) == 2 and segs[0] in self.__MODELS.keys():
             class_name = segs[0]
-            command_text = segs[1]
+            command_text = segs[1].replace("'", '"')
             if command_text in ['all()', 'count()']:
                 command = command_text[:-2]
                 line = "{} {}".format(command, class_name)
@@ -77,8 +77,7 @@ class HBNBCommand(cmd.Cmd):
                     instance_id = json.loads(
                         command_text[(b1 + 1):comma])
                     obj_update = json.loads(
-                        command_text[(comma + 1):b2].strip()
-                        .replace("'", '"'))
+                        command_text[(comma + 1):b2].strip())
                     count = 0
                     for k, v in list(obj_update.items()):
                         line = "{} {} {} {}".format(
@@ -90,10 +89,10 @@ class HBNBCommand(cmd.Cmd):
 
                 elif command_text.endswith(')'):
                     ctl_tmp = command_text.split('(')
-                    ctl = ctl_tmp[1][:-1]
+                    ctl = ctl_tmp[1][:-1].replace("'", '"')
                     ctl_array = ctl.split(',')
                     if len(ctl_array) == 3:
-                        id = json.loads(ctl_array[0])
+                        instance_id = json.loads(ctl_array[0])
                         attr = json.loads(ctl_array[1])
                         val = json.loads(ctl_array[2])
 
