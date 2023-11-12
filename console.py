@@ -99,7 +99,7 @@ class HBNBCommand(cmd.Cmd):
                         line = "{cmd} {cls} {id} {attr} {val}".format(
                             cmd=command,
                             cls=class_name,
-                            id=id,
+                            id=instance_id,
                             attr=attr,
                             val=val
                         )
@@ -246,7 +246,7 @@ class HBNBCommand(cmd.Cmd):
                         setattr(
                             item,
                             attribute_name,
-                            json.loads(attribute_value))
+                            attribute_value)
                         storage.new(item)
                         item.save()
                 else:
