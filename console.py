@@ -78,7 +78,7 @@ class HBNBCommand(cmd.Cmd):
                         command_text[(b1 + 1):comma])
                     obj_update = json.loads(
                         command_text[(comma + 1):b2].strip()
-                            .replace("'", '"'))
+                        .replace("'", '"'))
                     count = 0
                     for k, v in list(obj_update.items()):
                         line = "{} {} {} {}".format(
