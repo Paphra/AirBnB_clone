@@ -145,7 +145,7 @@ class HBNBCommand(cmd.Cmd):
             if Model:
                 item = Model()
                 item.save()
-                print(item)
+                print(item.id)
             else:
                 self.class_does_not_exist()
 
