@@ -31,19 +31,46 @@
 .amenities {
     height: 100%;
     width: 25%;
-    line-height: 1px;
 }
 
 .locations h3,
 .amenities h3 {
     font-weight: 600;
-    padding-left: 5%;
     margin-top: 10%;
+    padding-left: 5%;
+    line-height: 1px;
 }
 
 .locations h4,
 .amenities h4 {
     font-weight: 400;
-    padding-left: 5%;
     font-size: 14px;
+    padding-left: 5%;
+    line-height: 1px;
+}
+
+
+.popover {
+    background-color: #FAFAFA;
+    width: initial;
+    border: solid 1px #DDDDDD;
+    border-radius: 4px;
+    list-style-type: none;
+    position: relative;
+    display: none;
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
+
+.popover > h2 {
+    font-size: 16px;
+}
+
+.popover ul {
+    list-style-type: none;
+}
+
+.locations:hover .popover,
+.amenities:hover .popover {
+    display: block;
 }
