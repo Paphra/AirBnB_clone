@@ -18,9 +18,10 @@
     box-sizing: border-box;
     min-height: 100%;
     vertical-align: top;
+    text-align: left;
 }
 
-.places article h2 {
+.places article > h2 {
     font-size: 30px;
     text-align: center;
 }
@@ -82,4 +83,58 @@
 .description {
     text-align: left;
     margin: 10px 0px;
+}
+
+.amenities,
+.reviews {
+    text-align: left;
+    align-items: start;
+    justify-content: start;
+    justify-items: start;
+}
+
+.reviews > h2,
+.amenities > h2 {
+    font-size: 16px;
+    border-bottom: solid 1px #DDDDDD;
+    width: 100%;
+    margin-top: 10%;
+}
+
+.amenities ul,
+.reviews ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.reviews ul > li > h3 {
+    font-size: 14px;
+}
+
+.reviews ul > li > p {
+    font-size: 12px;
+}
+
+.tv,
+.wifi,
+.pets {
+    background-repeat: no-repeat;
+    background-position: left;
+    background-size: contain;
+    padding-left: 50px;
+    height: 20px;
+    margin: 5px 0px;
+    width: 100%;
+}
+
+.tv {
+    background-image: url('../images/icon_tv.png');
+}
+
+.pets {
+    background-image: url('../images/icon_pets.png');
+}
+
+.wifi {
+    background-image: url('../images/icon_wifi.png');
 }
